@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Runtime data — user's saved links live here; not source, don't commit it
+data/links.json
+
+# Logs & OS noise
+*.log
+.DS_Store
+Thumbs.db
+
+# Env / secrets
+.env
+.env.*
