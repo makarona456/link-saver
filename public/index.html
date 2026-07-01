@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Link Saver</title>
+  <style>
+    :root { --bg: #0f1720; --card: #1b2733; --line: #2c3a48; --text: #e6edf3; --muted: #8b98a5; --accent: #4c8bf5; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: var(--bg); color: var(--text); }
+    main { max-width: 680px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+    h1 { font-size: 1.6rem; margin: 0 0 .25rem; }
+    p.sub { color: var(--muted); margin: 0 0 1.5rem; }
+    form { display: flex; gap: .5rem; margin-bottom: 1rem; }
+    input[type=url] { flex: 1; padding: .6rem .7rem; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: var(--text); }
+    input[type=url]:focus { outline: none; border-color: var(--accent); }
+    button { cursor: pointer; border: 1px solid var(--line); background: var(--card); color: var(--text); border-radius: 8px; padding: .6rem .9rem; }
+    button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+    button:disabled { opacity: .5; cursor: default; }
+    #error { color: #ff6b6b; min-height: 1.2rem; font-size: .9rem; margin-bottom: .5rem; }
+    ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .6rem; }
+    li { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: .7rem .8rem; display: flex; align-items: center; gap: .6rem; }
+    li .body { flex: 1; min-width: 0; }
+    li .title { font-weight: 600; }
+    li a { color: var(--accent); text-decoration: none; word-break: break-all; font-size: .85rem; }
+    li a:hover { text-decoration: underline; }
+    li .meta { color: var(--muted); font-size: .8rem; }
+    .del { color: var(--muted); }
+    .del:hover { color: #ff6b6b; border-color: #ff6b6b; }
+    .empty { color: var(--muted); text-align: center; padding: 2rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>🔖 Link Saver</h1>
+    <p class="sub">Paste a URL — the title is fetched for you.</p>
+
+    <form id="add-form">
+      <input id="url" type="url" placeholder="https://example.com" required autocomplete="off" />
+      <button class="primary" type="submit">Save</button>
+    </form>
+    <div id="error" role="alert"></div>
+
+    <ul id="list"></ul>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
