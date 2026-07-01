@@ -12,3 +12,6 @@ Thumbs.db
 # Env / secrets
 .env
 .env.*
+
+# The task brief itself — not part of the deliverable
+*.pdf
