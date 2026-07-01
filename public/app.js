@@ -2,8 +2,12 @@ const form = document.getElementById('add-form');
 const urlInput = document.getElementById('url');
 const listEl = document.getElementById('list');
 const errorEl = document.getElementById('error');
+const favOnly = document.getElementById('fav-only');
+const countEl = document.getElementById('count');
 
 let links = [];
+
+favOnly.addEventListener('change', render);
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -33,6 +37,20 @@ form.addEventListener('submit', async (e) => {
   }
 });
 
+async function toggleFavourite(id) {
+  showError('');
+  try {
+    const res = await fetch(`/api/links/${id}`, { method: 'PATCH' });
+    if (!res.ok) throw new Error('Could not update that link.');
+    const updated = await res.json();
+    const link = links.find((l) => l.id === id);
+    if (link) link.favourite = updated.favourite;
+    render();
+  } catch (err) {
+    showError(err.message);
+  }
+}
+
 async function deleteLink(id) {
   showError('');
   try {
@@ -48,16 +66,26 @@ async function deleteLink(id) {
 function render() {
   listEl.innerHTML = '';
 
-  if (links.length === 0) {
+  const visible = favOnly.checked ? links.filter((l) => l.favourite) : links;
+  countEl.textContent = `${links.filter((l) => l.favourite).length} ★ · ${links.length} total`;
+
+  if (visible.length === 0) {
     const li = document.createElement('li');
     li.className = 'empty';
-    li.textContent = 'No links saved yet.';
+    li.textContent = favOnly.checked ? 'No favourites yet.' : 'No links saved yet.';
     listEl.append(li);
     return;
   }
 
-  for (const link of links) {
+  for (const link of visible) {
     const li = document.createElement('li');
+
+    const star = document.createElement('button');
+    star.className = 'star' + (link.favourite ? ' on' : '');
+    star.textContent = link.favourite ? '★' : '☆';
+    star.title = link.favourite ? 'Unmark favourite' : 'Mark as favourite';
+    star.setAttribute('aria-pressed', String(link.favourite));
+    star.addEventListener('click', () => toggleFavourite(link.id));
 
     const body = document.createElement('div');
     body.className = 'body';
@@ -83,7 +111,7 @@ function render() {
     del.textContent = 'Delete';
     del.addEventListener('click', () => deleteLink(link.id));
 
-    li.append(body, del);
+    li.append(star, body, del);
     listEl.append(li);
   }
 }
